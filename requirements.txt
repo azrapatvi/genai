@@ -1,0 +1,71 @@
+langchain
+langgraph
+langsmith
+langchain_groq
+ipykernel
+pandas
+numpy
+matplotlib
+python-dotenv
+langchain-community
+beautifulsoup4
+langchain-text-splitters
+langchain-ollama
+chromadb
+sentence_transformers
+langchain_huggingface
+faiss-cpu
+langchain_chroma
+fastapi
+langchain_tavily
+langchain-mcp-adapters
+mcp
+streamlit
+pypdf
+flask
+mss
+pynput
+# Audio / Video Acquisition
+yt-dlp
+pydub
+ffmpeg-python
+
+# Speech-to-Text
+openai-whisper
+torch
+torchaudio
+
+# Translation
+deep-translator
+
+# LLM Orchestration - LangChain
+langchain
+langchain-core
+langchain-community
+langchain-mistralai
+mistralai
+
+# RAG Pipeline
+chromadb
+sentence-transformers
+langchain-huggingface
+huggingface-hub
+tiktoken
+
+# Streamlit UI
+streamlit
+streamlit-extras
+watchdog
+
+# PDF & TXT Export
+reportlab
+fpdf2
+
+# Utilities
+python-dotenv
+numpy
+tqdm
+requests
+
+#sarvam
+sarvamai

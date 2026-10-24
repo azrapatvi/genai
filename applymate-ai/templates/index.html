@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ApplyMate AI</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="logo">A</div>
+    <div class="grow">
+      <h1>ApplyMate AI</h1>
+      <p>Apply for jobs by email, with your approval before anything is sent.</p>
+    </div>
+    <button id="editSetupBtn" class="hidden">Change details</button>
+  </header>
+
+  <!-- Setup -->
+  <section id="setup" class="setup hidden">
+    <h2>Set up your details</h2>
+    <form id="setupForm">
+      <label>Resume (PDF)
+        <input type="file" id="resume" accept=".pdf,application/pdf">
+        <small id="resumeNote"></small>
+      </label>
+      <label>LinkedIn URL
+        <input type="url" id="linkedin" placeholder="https://www.linkedin.com/in/your-name/" required>
+      </label>
+      <label>GitHub URL
+        <input type="url" id="github" placeholder="https://github.com/your-username/" required>
+      </label>
+      <label>Your Gmail address (emails are sent from this)
+        <input type="email" id="senderEmail" placeholder="you@gmail.com" required>
+      </label>
+      <label>Gmail App Password
+        <input type="password" id="appPassword" placeholder="16-character app password" autocomplete="off" required>
+      </label>
+      <button type="submit" class="primary" id="setupBtn">Save and start</button>
+    </form>
+
+    <div class="note">
+      <h3>How to get a Gmail App Password</h3>
+      <ol>
+        <li>Open your Google Account: <a href="https://myaccount.google.com/security" target="_blank" rel="noopener">myaccount.google.com/security</a> and turn on <b>2-Step Verification</b> (App Passwords only work with it enabled).</li>
+        <li>Go to <a href="https://myaccount.google.com/apppasswords" target="_blank" rel="noopener">myaccount.google.com/apppasswords</a>.</li>
+        <li>Type any name, for example <i>ApplyMate</i>, and click <b>Create</b>.</li>
+        <li>Google shows a 16-character password. Copy it and paste it in the field above (spaces are fine).</li>
+        <li>Use this app password, not your normal Gmail password.</li>
+      </ol>
+      <p>If you can't see the App Passwords page, 2-Step Verification is probably off, or your account is managed by a school/work admin who has disabled it. Your password is kept in memory only while the app is running and is used only to send your emails.</p>
+    </div>
+  </section>
+
+  <!-- Chat -->
+  <main id="chat" class="hidden"></main>
+
+  <section id="draftCard" class="draft hidden">
+    <div class="draft-head">Draft email</div>
+    <div class="row"><span>To</span><b id="dTo"></b></div>
+    <div class="row"><span>Subject</span><b id="dSubject"></b></div>
+    <pre id="dBody"></pre>
+    <textarea id="changes" rows="2" placeholder="Want changes? Type them here (you can also give a new recruiter email)"></textarea>
+    <div class="actions">
+      <button id="sendBtn" class="primary">Send</button>
+      <button id="changeBtn">Apply changes</button>
+      <button id="cancelBtn" class="danger">Cancel</button>
+    </div>
+  </section>
+
+  <form id="form" class="hidden">
+    <input id="input" type="text" placeholder="Type your message..." autocomplete="off">
+    <button type="submit" id="submitBtn" class="primary">Send</button>
+  </form>
+</div>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
