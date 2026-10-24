@@ -523,81 +523,6 @@ Short notebooks on the **new LangChain 1.x style**. They use Groq (`openai/gpt-o
 
 ---
 
-## 6. How to set up the project
-
-### Step 1 - Get the code
-
-```bash
-git clone https://github.com/azrapatvi/genai.git
-cd genai
-```
-
-### Step 2 - Create a virtual environment (Python 3.12)
-
-```bash
-python -m venv .venv
-
-# Windows
-.venv\Scripts\activate
-# Mac / Linux
-source .venv/bin/activate
-```
-
-### Step 3 - Install libraries
-
-Use `requirements.txt` because it has **everything** (the video assistant and screen reader need extra libraries):
-
-```bash
-pip install -r requirements.txt
-pip install uvicorn python-multipart
-```
-
-- `uvicorn` runs the FastAPI apps (`rag`, `website-chatbot`).
-- `python-multipart` is needed for PDF upload in FastAPI.
-- If you see an error about `langchain_classic` (website chatbot and the `langchain_ex/005_LLM` RAG notebooks), run `pip install langchain-classic`.
-- For `langchain_ex/005_LLM/serve.py` you also need LangServe: `pip install "langserve[all]"`.
-- For the Wikipedia loader in `001_data_ingestion` run `pip install wikipedia`.
-
-Using `uv` instead:
-
-```bash
-uv sync
-```
-
-(`uv sync` installs only what is in `pyproject.toml`, so you may still need to add the extra libraries from `requirements.txt` for some folders.)
-
-### Step 4 - Install ffmpeg (only for `video_assistant`)
-
-Install **ffmpeg** from https://ffmpeg.org and make sure the command `ffmpeg` works in your terminal.
-
-### Step 5 - Install Ollama (only for the local-model lessons)
-
-Needed for `langchain_ex/003_Embeddings/ollama_embedding.ipynb`, `004_vectore_store`, `005_LLM/rag2.ipynb` and `005_LLM/genai_app_with_ollama`. Install Ollama from https://ollama.com, then download the two small models:
-
-```bash
-ollama pull qwen2.5:0.5b
-ollama pull nomic-embed-text
-```
-
-Keep Ollama running in the background while you use these notebooks (it listens on `http://localhost:11434`).
-
-### Step 6 - Create a `.env` file in the project root
-
-```env
-GROQ_API_KEY=your_groq_key
-TAVILY_API_KEY=your_tavily_key
-LANGCHAIN_API_KEY=your_langsmith_key
-LANGCHAIN_PROJECT=any_project_name
-LANGCHAIN_PROJECT2=any_project_name
-OPENAI_API_KEY=your_openai_key
-HF_TOKEN=your_huggingface_token
-SARVAM_API_KEY=your_sarvam_key
-SENDER_EMAIL=you@gmail.com
-GMAIL_APP_PASSWORD=your_16_character_app_password
-```
-
-Which keys do you need?
-
 | Key | Needed for |
 |---|---|
 | `GROQ_API_KEY` | Almost everything |
@@ -616,79 +541,8 @@ Which keys do you need?
 
 ---
 
-## 7. How to run each project
 
-Run these commands **from inside the project's own folder** (many files use paths relative to their folder).
-
-| Project | Commands | Then open |
-|---|---|---|
-| **ApplyMate AI** | `cd applymate-ai` then `python main.py` | http://localhost:5000 |
-| **Nova AI (PDF chat)** | `cd rag` then `uvicorn main:app --reload` | http://localhost:8000 |
-| **Website chatbot** | `cd website-chatbot` then `uvicorn main:app --reload` | http://localhost:8000 |
-| **Vidi AI (video)** | `cd video_assistant` then `streamlit run app.py` | the link Streamlit prints |
-| **Video assistant (terminal)** | `cd video_assistant` then `python main.py` | - |
-| **Chat with database** | `cd chat_with_db` then `python sqlite.py` (once) then `streamlit run sqlite_backend.py` | the link Streamlit prints |
-| **CineSage** | `cd cineSage` then `streamlit run main.py` | the link Streamlit prints |
-| **Simple chat (RAM)** | `cd qa_chatbot` then `streamlit run frontend.py` | the link Streamlit prints |
-| **Chat with history** | `cd qa_chatbot` then `streamlit run frontend_resuming_chat.py` | the link Streamlit prints |
-| **Chat with saved memory** | `cd qa_chatbot_databse` then `streamlit run frontend.py` | the link Streamlit prints |
-| **Screen reader (Windows)** | `cd screen_reader` then `python screen_reader.py` | click the floating **AI** button or press Ctrl + Alt + S |
-| **MCP demo** | Terminal 1: `cd mcp` then `python weather_server.py`. Terminal 2: `cd mcp` then `python client.py` | - |
-| **Stock chatbot** | `cd human_in_the_loop_middleware` then `python chatbot_to_purhase_stock.py` (type `exit` to stop) | - |
-| **LangServe translator API** | `cd langchain_ex/005_LLM` then `python serve.py` | http://localhost:8000/docs (and `POST /chain/invoke`) |
-| **Local Ollama chatbot** | Start Ollama and `ollama pull qwen2.5:0.5b`, then `cd langchain_ex/005_LLM/genai_app_with_ollama` and `streamlit run main.py` | the link Streamlit prints |
-| **Code + explanation chain** | `cd basic_chatbot` then `python runnable_passthorugh.py` | - |
-| **Notebooks** | Open any `.ipynb` in VS Code or Jupyter and run the cells from top to bottom | - |
-
-> The `rag` and `website-chatbot` apps both use port 8000 by default. Run one at a time, or add `--port 8001` to the second one. The MCP weather server also uses port 8000.
-
----
-
-## 8. Things to know before you run (known issues)
-
-I read every file while writing this README. These are things I noticed. They are good "next steps" to improve the repo.
-
-**Security and privacy**
-
-- `human_in_the_loop_middleware/chatbot_to_purhase_stock.py` has an **Alpha Vantage API key written directly in the code**. Move it to `.env` and create a new key, because the old one is now public in Git history.
-- The resume PDFs that were in `applymate-ai` and one PDF in `rag/uploads` have been removed - good. But `rag/uploads/888890b0...pdf` (a letter) is still there. Consider removing it and adding `uploads/` folders to `.gitignore`.
-- `video_assistant/downloads` has an **89 MB** audio file. Large files make the repo slow. Consider ignoring `downloads/` and `chroma-db/`.
-- `langchain_ex/005_LLM/llm_creation.ipynb` prints the **first 8 characters of the Groq API key** and the saved output is inside the notebook. Delete that cell output (and rotate the key if you are worried).
-- Some notebook outputs in `langchain_ex` show local paths like `C:\Users\...` and web-page contents (including a business phone number from the Yakron website in `chat_bot.ipynb`). Clear the outputs before sharing if you do not want these public.
-- `langchain_ex/004_vectore_store/chroma_db/` and `faiss_index/` are **generated data** and `langchain_ex/005_LLM/__pycache__/serve.cpython-312.pyc` is a compiled cache file. They are in the repo even though `.gitignore` lists `__pycache__/` and `*.sqlite3` (they were added before / forced). Remove them with `git rm --cached` and let Git ignore them.
-- One FAISS file (`index.pkl`) is a Python **pickle**. Only load FAISS indexes that you made yourself (`allow_dangerous_deserialization=True` is needed because pickle files can run code).
-
-**Paths and setup**
-
-- Several files use **Windows paths that only work on the author's computer**, for example `E:\chatbot\...` in `chat_with_db/agent.py`, `chat_with_db/sqlite.py`, `chat_with_db/sqlite_backend.py` (through `agent.py`), `cineSage/main.py`, `video_assistant/utils/audio_process.py`, and in the notebooks. Change them to your own folder before running (or switch to relative paths).
-- `requirements.txt` and `pyproject.toml` are **not the same list**. `requirements.txt` is the complete one.
-- `fastapi` is installed, but `uvicorn` and `python-multipart` are not in the lists - install them yourself (see Step 3).
-- `website-chatbot/main.py` needs `GROQ_API_KEY`, `HF_TOKEN` and `LANGCHAIN_API_KEY` **all** set, otherwise it stops at start-up.
-- `website-chatbot` keeps **one shared chat history** for all visitors (it is a simple demo).
-- `langserve` is **not** in `requirements.txt` or `pyproject.toml` (needed for `serve.py`), and neither are `langchain-classic` and `wikipedia`. Install them yourself (see Step 3).
-- The `langchain_ex` notebooks need **Ollama running** and the two models pulled (Step 5). Without it, cells that use `OllamaEmbeddings` fail with a connection error.
-- Many notebooks load files with plain names like `speech.txt` and `ugc_ad_script.pdf`, so **start Jupyter from inside that notebook's folder** (each part has its own copy of `speech.txt`). `data_ingestion.ipynb` also reads a personal file from `C:\Users\Azrap\Downloads\resume.pdf` - change it to any PDF you have.
-- `langchain_ex/001_data_ingestion/data_ingestion.ipynb` has a cell that says arXiv is "not supported now" and uses `PyPDFLoader` with the arXiv PDF link instead - that is the working way. The `pip install --force-reinstall "arxiv<2"` cell is not needed for it.
-- `langchain_ex` notebooks use older import paths from `langchain_community` (it prints a "being sunset" warning) and the old chains from `langchain_classic`. They still work, but newer code should use `langchain_huggingface`, `langchain_ollama` and `langchain_chroma`.
-
-**Small bugs worth fixing**
-
-- `human_in_the_loop_middleware/chatbot_to_purhase_stock.py`: if you answer **no**, the graph is not resumed, so it asks the same question again. It also creates a new bot every turn, so memory is lost between messages.
-- `restaurant-booking-systems/restaurant-booking-system.ipynb`: `get_bookings()` reads a table called `bookings`, but the real table is `restaurant_bookings`, so `view_bookings` will fail. The prompt also mentions `get_valid_table_ids()`, which does not exist.
-- `video_assistant/main.py`: `run_pipeline` calls `process_input(source)` **without the language**, so Hindi audio is cut into 4-minute pieces instead of the 25-second pieces that Sarvam needs. (`core/test.py` passes the language correctly.) Also the terminal asks for "english/hinglish", but the code checks for `"hi"`.
-- `video_assistant/core/vector_store.py`: every video adds to the **same** Chroma collection, so old videos can mix with new ones.
-- `chat_with_db/sqlite.py`: running it twice inserts the 8 students again (duplicates).
-- `cineSage/main.py`: the `MovieInfo` Pydantic class is defined but not used by the chain (the app uses `JsonOutputParser`).
-- `basic_chatbot/fault_tolerance.ipynb` is empty and `src/chatbot/__init__.py` is only the default starter.
-- `langchain_ex/005_LLM/genai_app_with_ollama/main.py`: the line `os.environ['LANGCHAIN_PROJECT2']=os.getenv("LANGCHAIN_PROJECT2")` crashes if that variable is not in `.env`. Also `LANGCHAIN_TRACING_V3` is not a real LangChain setting (the real one is `LANGCHAIN_TRACING_V2`), so tracing is not switched on. The app does not need either line to work.
-- `langchain_ex/005_LLM/serve.py` imports `streamlit` but never uses it, and only sets `LANGCHAIN_API_KEY` (it needs `GROQ_API_KEY` in `.env` too, which `ChatGroq` reads by itself).
-- `langchain_ex/005_LLM/rag2.ipynb` calls `llm.invoke("hello")` before the RAG chain - harmless, but it needs `GROQ_API_KEY` to be loaded; the notebook does that in an earlier cell.
-- `langchain_ex/005_LLM/llm_with_history.ipynb` has a cell `GROQ_API_KEY is None` (a quick check, not a fix) and the `RAG_APP.ipynb` last cell waits for `input()`.
-- `updated_langchain/agents.ipynb`: the first `create_agent` cell uses `model='gpt-5'`, which fails without an OpenAI key. Skip it and run the Groq cell.
-
----
-
-## 9. Suggested learning order
+##  Suggested learning order
 
 If you want to learn from this repo, follow this path:
 
@@ -716,4 +570,3 @@ If you want to learn from this repo, follow this path:
 **Azra Patvi** - AI and Data Science student and developer.
 GitHub: [@azrapatvi](https://github.com/azrapatvi)
 
-If this repo helped you, give it a star.
