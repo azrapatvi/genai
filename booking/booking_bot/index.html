@@ -1,0 +1,1397 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sunrise Multi-Speciality Hospital | Virtual Assistant</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Markdown parser -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<!-- Sanitize generated HTML before rendering -->
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+
+<style>
+:root {
+    --teal: #087f8c;
+    --deep-teal: #064e60;
+    --bg: #edf8fa;
+    --text: #173b4a;
+    --muted: #77929d;
+    --border: #dcebef;
+    --white: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 80% 10%, #d8f3f5, transparent 35%),
+        linear-gradient(135deg, #eef9fb, #e5f5f6);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+}
+
+button, textarea {
+    font: inherit;
+}
+
+button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.app {
+    width: min(1500px, 100%);
+    height: 100vh;
+    height: 100dvh;
+    margin: auto;
+    padding: 18px;
+    display: grid;
+    grid-template-columns: 275px minmax(0, 1fr);
+    gap: 18px;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 25px 20px 19px;
+    color: white;
+    border-radius: 24px;
+    background:
+        radial-gradient(ellipse at 20% 65%, rgba(26, 184, 190, .3), transparent 35%),
+        linear-gradient(155deg, #075c6c, #043c50 75%, #032f43);
+    box-shadow: 0 15px 40px rgba(5, 71, 85, .16);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.brand-logo {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 15px;
+    display: grid;
+    place-items: center;
+    color: #075666;
+    background: linear-gradient(145deg, #d7fff8, #83e5e0);
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.brand h1 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 16px;
+    line-height: 1.25;
+    letter-spacing: -.5px;
+}
+
+.brand p {
+    color: #bce9eb;
+    margin-top: 4px;
+    font-size: 10px;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+}
+
+.tagline {
+    margin: 19px 0 26px;
+    text-align: center;
+    color: #bce8e9;
+    font-size: 11px;
+    letter-spacing: .3px;
+}
+
+.side-label {
+    margin: 0 0 10px 10px;
+    color: #93c9d1;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.nav {
+    display: grid;
+    gap: 7px;
+}
+
+.nav-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 13px;
+    border: 1px solid transparent;
+    border-radius: 13px;
+    background: transparent;
+    color: #e2f5f6;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: background .2s, transform .2s;
+}
+
+.nav-item:hover {
+    background: #ffffff12;
+}
+
+.nav-item.active {
+    background: linear-gradient(110deg, #07889a, #079c99);
+    border-color: #5bdbd04d;
+    color: white;
+}
+
+.nav-icon {
+    width: 26px;
+    text-align: center;
+    font-size: 19px;
+}
+
+.side-card {
+    margin-top: 27px;
+    padding: 15px;
+    border: 1px solid #ffffff20;
+    border-radius: 16px;
+    background: #ffffff0c;
+}
+
+.side-card h3 {
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.side-card p {
+    font-size: 11px;
+    line-height: 1.8;
+    color: #c2e1e5;
+}
+
+.pulse {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #65edb0;
+    margin-right: 6px;
+}
+
+.sidebar-spacer {
+    flex: 1;
+    min-height: 14px;
+}
+
+.hospital-art {
+    text-align: center;
+    padding: 13px 0 18px;
+    border-bottom: 1px solid #ffffff20;
+}
+
+.hospital-art .cross {
+    width: 83px;
+    height: 83px;
+    margin: auto;
+    border: 1px solid #b3ffff4d;
+    border-radius: 28px;
+    background: linear-gradient(145deg, #0f8492, #075061);
+    display: grid;
+    place-items: center;
+    font-size: 44px;
+    color: #b6fff1;
+    box-shadow: 0 12px 30px #002e413d;
+    transform: rotate(-5deg);
+}
+
+.hospital-art p {
+    margin-top: 14px;
+    color: #c2eaeb;
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.hospital-art small {
+    display: block;
+    margin-top: 5px;
+    color: #8fc9d0;
+    font-size: 10px;
+}
+
+.sidebar-footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 16px;
+    color: #d3eeee;
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+.footer-icon {
+    font-size: 22px;
+}
+
+/* MAIN */
+
+.main {
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.topbar {
+    flex-shrink: 0;
+    min-height: 84px;
+    padding: 15px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: #ffffffed;
+    border: 1px solid var(--border);
+    border-radius: 21px;
+    box-shadow: 0 8px 28px #2459680b;
+}
+
+.assistant-info {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.bot-avatar {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: 16px;
+    background: linear-gradient(145deg, #d8f7f3, #b8ece9);
+    font-size: 26px;
+}
+
+.assistant-info h2 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: -.4px;
+}
+
+.assistant-info p {
+    margin-top: 5px;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.online-pill {
+    padding: 9px 12px;
+    border-radius: 30px;
+    border: 1px solid #d6f0e7;
+    background: #f0fbf7;
+    color: #16835c;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.online-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #2ebd83;
+    margin-right: 5px;
+}
+
+.new-chat {
+    padding: 11px 15px;
+    border: 1px solid #cde5e9;
+    border-radius: 12px;
+    background: white;
+    color: var(--teal);
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.new-chat:hover {
+    background: #e9f8f6;
+    border-color: #8acdc8;
+}
+
+.new-chat:disabled {
+    opacity: .5;
+    cursor: wait;
+}
+
+/* CHAT CARD */
+
+.chat-card {
+    min-width: 0;
+    min-height: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    background: #ffffffed;
+    box-shadow: 0 12px 36px #2459680a;
+}
+
+.chat-date {
+    flex-shrink: 0;
+    text-align: center;
+    padding: 12px 10px 5px;
+}
+
+.chat-date span {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 30px;
+    background: #edf7f8;
+    color: #77939d;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+/* SCROLLABLE CONVERSATION */
+
+.messages {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: #a9cdd3 #f2f8f9;
+    padding: 18px 24px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    scroll-behavior: smooth;
+}
+
+.messages::-webkit-scrollbar {
+    width: 7px;
+}
+
+.messages::-webkit-scrollbar-track {
+    background: #f2f8f9;
+}
+
+.messages::-webkit-scrollbar-thumb {
+    background: #b3d2d8;
+    border-radius: 20px;
+}
+
+.message {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    max-width: 92%;
+    animation: appear .2s ease-out;
+}
+
+@keyframes appear {
+    from { opacity: 0; transform: translateY(7px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.message.user {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.message-avatar {
+    width: 33px;
+    height: 33px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: #def5f1;
+    font-size: 17px;
+}
+
+.user .message-avatar {
+    background: #e9eef8;
+}
+
+.message-content {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.message-name {
+    margin: 0 0 6px 3px;
+    color: #8097a0;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.user .message-name {
+    text-align: right;
+    margin-right: 3px;
+}
+
+.bubble {
+    min-width: 0;
+    padding: 13px 16px;
+    border: 1px solid #e2eef0;
+    border-radius: 17px 17px 17px 5px;
+    background: linear-gradient(145deg, #f2f9fa, #edf7f8);
+    color: #234553;
+    font-size: 12px;
+    line-height: 1.85;
+    overflow-wrap: anywhere;
+}
+
+.user .bubble {
+    border-color: transparent;
+    border-radius: 17px 17px 5px 17px;
+    background: linear-gradient(135deg, #078c98, #087181);
+    color: white;
+}
+
+.message-time {
+    margin: 5px 3px 0;
+    color: #9aadb4;
+    font-size: 9px;
+}
+
+.user .message-time {
+    text-align: right;
+}
+
+/* MARKDOWN CONTENT */
+
+.bubble p {
+    margin: 0 0 9px;
+}
+
+.bubble p:last-child {
+    margin-bottom: 0;
+}
+
+.bubble h1, .bubble h2, .bubble h3,
+.bubble h4 {
+    margin: 10px 0 7px;
+    font-family: 'Manrope', sans-serif;
+    line-height: 1.5;
+}
+
+.bubble h1 { font-size: 17px; }
+.bubble h2 { font-size: 15px; }
+.bubble h3, .bubble h4 { font-size: 13px; }
+
+.bubble ul, .bubble ol {
+    padding-left: 22px;
+    margin: 7px 0 10px;
+}
+
+.bubble li {
+    margin: 4px 0;
+    padding-left: 2px;
+}
+
+.bubble blockquote {
+    border-left: 3px solid #7dc6c4;
+    padding-left: 12px;
+    margin: 8px 0;
+    color: #52747e;
+}
+
+.bubble a {
+    color: #087f8c;
+    text-decoration: underline;
+    overflow-wrap: anywhere;
+}
+
+.bubble strong {
+    font-weight: 700;
+}
+
+.bubble hr {
+    border: 0;
+    border-top: 1px solid #dcebef;
+    margin: 12px 0;
+}
+
+.table-wrap {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    margin: 10px 0;
+    border: 1px solid #dcebef;
+    border-radius: 10px;
+    background: white;
+    scrollbar-width: thin;
+}
+
+.bubble table {
+    width: 100%;
+    min-width: 430px;
+    border-collapse: collapse;
+    font-size: 11px;
+    line-height: 1.6;
+    background: white;
+}
+
+.bubble th, .bubble td {
+    padding: 10px 12px;
+    border: 1px solid #e0ebee;
+    text-align: left;
+    vertical-align: top;
+    overflow-wrap: anywhere;
+}
+
+.bubble th {
+    background: #e3f5f2;
+    color: #075e6a;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.bubble td {
+    color: #355764;
+}
+
+.bubble tbody tr:nth-child(even) td {
+    background: #f6fbfc;
+}
+
+.bubble pre {
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    padding: 10px;
+    border-radius: 8px;
+    background: #eaf3f5;
+    margin: 8px 0;
+}
+
+.bubble code {
+    background: #e5f1f3;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-size: .95em;
+}
+
+.bubble pre code {
+    padding: 0;
+    background: transparent;
+}
+
+.user .bubble p {
+    margin: 0;
+}
+
+.user .bubble a {
+    color: #fff;
+}
+
+/* TYPING INDICATOR */
+
+.typing {
+    display: none;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 9px;
+    padding: 0 25px 10px;
+    color: #7d969e;
+    font-size: 10px;
+}
+
+.typing.visible {
+    display: flex;
+}
+
+.typing-dots {
+    display: flex;
+    gap: 4px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: #edf7f7;
+}
+
+.typing-dots span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #58a7a7;
+    animation: bounce 1s infinite;
+}
+
+.typing-dots span:nth-child(2) {
+    animation-delay: .15s;
+}
+
+.typing-dots span:nth-child(3) {
+    animation-delay: .3s;
+}
+
+@keyframes bounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-4px); }
+}
+
+/* QUICK ACTIONS */
+
+.quick-section {
+    flex-shrink: 0;
+    padding: 8px 22px 14px;
+    border-top: 1px solid #edf3f4;
+}
+
+.quick-heading {
+    margin-bottom: 10px;
+    color: #849ca4;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.suggestion {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 12px;
+    border: 1px solid #d7e9ec;
+    border-radius: 30px;
+    background: #fff;
+    color: #267581;
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.suggestion:hover {
+    background: #eaf8f6;
+    border-color: #91d1cc;
+}
+
+.suggestion:disabled, .nav-item:disabled {
+    opacity: .5;
+    cursor: wait;
+}
+
+/* INPUT */
+
+.composer {
+    flex-shrink: 0;
+    padding: 0 20px 15px;
+}
+
+.input-wrap {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    padding: 8px 9px 8px 16px;
+    border: 1px solid #d9e9ed;
+    border-radius: 17px;
+    background: #fff;
+    box-shadow: 0 5px 18px #174f5c08;
+    transition: .2s;
+}
+
+.input-wrap:focus-within {
+    border-color: #79c7c7;
+    box-shadow: 0 0 0 3px #087f8c0d;
+}
+
+#messageInput {
+    flex: 1;
+    min-width: 0;
+    max-height: 120px;
+    min-height: 40px;
+    padding: 10px 0;
+    resize: none;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+#messageInput::placeholder {
+    color: #9aadb4;
+}
+
+#sendButton {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 13px;
+    background: linear-gradient(145deg, #0b929a, #076c7d);
+    color: white;
+    font-size: 19px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+#sendButton:hover {
+    transform: translateY(-1px);
+}
+
+#sendButton:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.disclaimer {
+    padding-top: 10px;
+    text-align: center;
+    color: #94a9af;
+    font-size: 9px;
+    line-height: 1.6;
+}
+
+.disclaimer strong {
+    color: #668b94;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+    .app {
+        grid-template-columns: 220px minmax(0, 1fr);
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .sidebar {
+        padding: 20px 14px;
+    }
+
+    .brand h1 {
+        font-size: 14px;
+    }
+
+    .topbar {
+        padding: 13px 16px;
+    }
+
+    .online-pill {
+        display: none;
+    }
+
+    .messages {
+        padding: 16px;
+    }
+
+    .quick-section {
+        padding: 8px 15px 12px;
+    }
+
+    .composer {
+        padding: 0 14px 12px;
+    }
+}
+
+@media (max-width: 650px) {
+    .app {
+        width: 100%;
+        height: 100vh;
+        height: 100dvh;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        gap: 0;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .main {
+        flex: 1;
+        min-height: 0;
+        gap: 0;
+    }
+
+    .topbar {
+        min-height: 72px;
+        border-radius: 0;
+        border: none;
+        border-bottom: 1px solid var(--border);
+        padding: 10px 12px;
+        gap: 8px;
+    }
+
+    .bot-avatar {
+        width: 39px;
+        height: 39px;
+        border-radius: 12px;
+        font-size: 21px;
+    }
+
+    .assistant-info {
+        gap: 8px;
+    }
+
+    .assistant-info h2 {
+        font-size: 12px;
+    }
+
+    .assistant-info p {
+        font-size: 9px;
+    }
+
+    .new-chat {
+        padding: 10px;
+        font-size: 10px;
+    }
+
+    .chat-card {
+        flex: 1;
+        border: none;
+        border-radius: 0;
+    }
+
+    .chat-date {
+        padding-top: 8px;
+    }
+
+    .messages {
+        padding: 14px 11px 18px;
+        gap: 17px;
+    }
+
+    .message {
+        max-width: 97%;
+        gap: 7px;
+    }
+
+    .message-avatar {
+        width: 29px;
+        height: 29px;
+        border-radius: 10px;
+    }
+
+    .bubble {
+        padding: 11px 12px;
+        font-size: 12px;
+        line-height: 1.75;
+    }
+
+    .bubble table {
+        min-width: 430px;
+    }
+
+    .quick-section {
+        padding: 9px 11px;
+    }
+
+    .quick-heading {
+        margin-bottom: 7px;
+    }
+
+    .suggestions {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 3px;
+        scrollbar-width: none;
+    }
+
+    .suggestions::-webkit-scrollbar {
+        display: none;
+    }
+
+    .suggestion {
+        flex-shrink: 0;
+        font-size: 10px;
+    }
+
+    .composer {
+        padding: 0 9px 7px;
+    }
+
+    .input-wrap {
+        padding-left: 12px;
+        gap: 7px;
+    }
+
+    #sendButton {
+        width: 39px;
+        height: 39px;
+    }
+
+    .disclaimer {
+        font-size: 8px;
+        padding: 7px 5px 2px;
+    }
+
+    .typing {
+        padding: 0 12px 9px;
+    }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-logo">✚</div>
+            <div>
+                <h1>Sunrise Hospital</h1>
+                <p>Multi-Speciality Care</p>
+            </div>
+        </div>
+
+        <div class="tagline">Better Health · Brighter Tomorrow</div>
+
+        <div class="side-label">Patient services</div>
+
+        <nav class="nav">
+            <button type="button" class="nav-item active" data-action="welcome">
+                <span class="nav-icon">◉</span> Chat Assistant
+            </button>
+            <button type="button" class="nav-item" data-message="I want to book an appointment">
+                <span class="nav-icon">▦</span> Book Appointment
+            </button>
+            <button type="button" class="nav-item" data-message="Check doctor availability">
+                <span class="nav-icon">♙</span> Find a Doctor
+            </button>
+            <button type="button" class="nav-item" data-message="I want to find my appointments">
+                <span class="nav-icon">☑</span> My Appointments
+            </button>
+            <button type="button" class="nav-item" data-message="I want to update an appointment">
+                <span class="nav-icon">✎</span> Update Appointment
+            </button>
+        </nav>
+
+        <div class="side-card">
+            <h3><span class="pulse"></span> Virtual assistance</h3>
+            <p>Get help checking availability, booking appointments, and managing your visits.</p>
+        </div>
+
+        <div class="sidebar-spacer"></div>
+
+        <div class="hospital-art">
+            <div class="cross">✚</div>
+            <p>Your Health, Our Priority</p>
+            <small>Here to help with your appointments</small>
+        </div>
+
+        <div class="sidebar-footer">
+            <span class="footer-icon">♧</span>
+            <div>
+                <strong>Privacy matters</strong><br>
+                Please protect your personal information.
+            </div>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <div class="assistant-info">
+                <div class="bot-avatar">🤖</div>
+                <div>
+                    <h2>Sunrise Hospital Assistant</h2>
+                    <p id="statusText">Your intelligent appointment companion</p>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <div class="online-pill">
+                    <span class="online-dot"></span> Online
+                </div>
+                <button type="button" class="new-chat" id="newChatButton">
+                    ＋ New Chat
+                </button>
+            </div>
+        </header>
+
+        <section class="chat-card">
+            <div class="chat-date">
+                <span id="dateLabel">TODAY</span>
+            </div>
+
+            <div class="messages" id="messages" aria-live="polite">
+                <div class="message bot">
+                    <div class="message-avatar">🤖</div>
+                    <div class="message-content">
+                        <div class="message-name">Sunrise Assistant</div>
+                        <div class="bubble">Hello! Welcome to Sunrise Multi-Speciality Hospital.
+
+I'm your virtual appointment assistant. I can help you:
+
+- Check doctor availability
+- Book an appointment
+- Find your appointments
+- Update an existing appointment
+
+How can I help you today?</div>
+                        <div class="message-time">Your virtual care assistant</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="typing" id="typingIndicator">
+                <div class="typing-dots">
+                    <span></span><span></span><span></span>
+                </div>
+                Sunrise Assistant is thinking...
+            </div>
+
+            <div class="quick-section" id="quickSection">
+                <div class="quick-heading">Quick actions</div>
+                <div class="suggestions" id="suggestions">
+                    <button type="button" class="suggestion" data-message="Check doctor availability">
+                        🩺 Check availability
+                    </button>
+                    <button type="button" class="suggestion" data-message="I want to book an appointment">
+                        📅 Book appointment
+                    </button>
+                    <button type="button" class="suggestion" data-message="I want to find my appointments">
+                        📋 My appointments
+                    </button>
+                    <button type="button" class="suggestion" data-message="I want to update an appointment">
+                        ✏️ Update appointment
+                    </button>
+                </div>
+            </div>
+
+            <form class="composer" id="chatForm">
+                <div class="input-wrap">
+                    <textarea
+                        id="messageInput"
+                        name="message"
+                        rows="1"
+                        placeholder="Type your message here..."
+                        aria-label="Type your message"
+                        required
+                    ></textarea>
+                    <button id="sendButton" type="submit" aria-label="Send message" disabled>
+                        ➤
+                    </button>
+                </div>
+
+                <p class="disclaimer">
+                    <strong>🔒 Please avoid sharing unnecessary sensitive information.</strong><br>
+                    This assistant does not replace professional medical advice.
+                </p>
+            </form>
+        </section>
+    </main>
+</div>
+
+<script>
+const messages = document.getElementById("messages");
+const chatForm = document.getElementById("chatForm");
+const messageInput = document.getElementById("messageInput");
+const sendButton = document.getElementById("sendButton");
+const typingIndicator = document.getElementById("typingIndicator");
+const suggestions = document.getElementById("suggestions");
+const newChatButton = document.getElementById("newChatButton");
+const statusText = document.getElementById("statusText");
+const dateLabel = document.getElementById("dateLabel");
+
+let thread_id = null;
+let sending = false;
+
+dateLabel.textContent = new Date().toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric"
+}).toUpperCase();
+
+function scrollToLatest() {
+    requestAnimationFrame(() => {
+        messages.scrollTop = messages.scrollHeight;
+    });
+}
+
+// Convert assistant Markdown into safe, formatted HTML.
+function renderMarkdown(bubble, text) {
+    if (window.marked && window.DOMPurify) {
+        const html = window.marked.parse(text, {
+            gfm: true,
+            breaks: true
+        });
+
+        bubble.innerHTML = DOMPurify.sanitize(html);
+
+        // Wrap tables to allow horizontal scrolling on smaller screens.
+        bubble.querySelectorAll("table").forEach(table => {
+            const wrapper = document.createElement("div");
+            wrapper.className = "table-wrap";
+            table.parentNode.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+        });
+
+        // Only allow safe link protocols.
+        bubble.querySelectorAll("a").forEach(link => {
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+        });
+    } else {
+        // Safe fallback if the CDN is unavailable.
+        bubble.textContent = text;
+    }
+}
+
+function addMessage(text, sender) {
+    const message = document.createElement("div");
+    message.className = `message ${sender}`;
+
+    const avatar = document.createElement("div");
+    avatar.className = "message-avatar";
+    avatar.textContent = sender === "user" ? "👤" : "🤖";
+
+    const content = document.createElement("div");
+    content.className = "message-content";
+
+    const name = document.createElement("div");
+    name.className = "message-name";
+    name.textContent = sender === "user" ? "You" : "Sunrise Assistant";
+
+    const bubble = document.createElement("div");
+    bubble.className = "bubble";
+
+    if (sender === "bot") {
+        renderMarkdown(bubble, String(text ?? ""));
+    } else {
+        // Never interpret a user's message as HTML or Markdown.
+        bubble.textContent = String(text ?? "");
+    }
+
+    const time = document.createElement("div");
+    time.className = "message-time";
+    time.textContent = new Date().toLocaleTimeString("en-IN", {
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+
+    content.append(name, bubble, time);
+    message.append(avatar, content);
+    messages.appendChild(message);
+
+    scrollToLatest();
+}
+
+function resetMessages() {
+    messages.replaceChildren();
+
+    addMessage(
+        "Hello! Welcome to Sunrise Multi-Speciality Hospital.\n\nI'm your virtual appointment assistant. I can help you:\n\n- Check doctor availability\n- Book an appointment\n- Find your appointments\n- Update an existing appointment\n\nHow can I help you today?",
+        "bot"
+    );
+
+    suggestions.style.display = "flex";
+}
+
+async function createNewChat() {
+    thread_id = null;
+    sendButton.disabled = true;
+    newChatButton.disabled = true;
+    statusText.textContent = "Starting a new conversation...";
+
+    try {
+        const response = await fetch("/new-chat", {
+            method: "POST"
+        });
+
+        if (!response.ok) {
+            throw new Error("Could not create a new chat.");
+        }
+
+        const data = await response.json();
+        thread_id = String(data.thread_id);
+
+        statusText.textContent = `Conversation #${thread_id}`;
+        console.log("New thread ID:", thread_id);
+    } catch (error) {
+        statusText.textContent = "Unable to connect";
+        addMessage(
+            "I couldn't start a new conversation. Please check that the FastAPI server is running, then refresh the page.",
+            "bot"
+        );
+        console.error(error);
+    } finally {
+        newChatButton.disabled = false;
+        sendButton.disabled = !thread_id || sending;
+    }
+}
+
+async function sendMessage(text) {
+    text = text.trim();
+
+    if (!text || sending || !thread_id) {
+        return;
+    }
+
+    sending = true;
+    sendButton.disabled = true;
+    messageInput.disabled = true;
+    newChatButton.disabled = true;
+
+    document.querySelectorAll(".suggestion, .nav-item").forEach(button => {
+        button.disabled = true;
+    });
+
+    addMessage(text, "user");
+    suggestions.style.display = "none";
+    typingIndicator.classList.add("visible");
+    scrollToLatest();
+
+    const formData = new FormData();
+    formData.append("message", text);
+    formData.append("thread_id", thread_id);
+
+    try {
+        const response = await fetch("/chat", {
+            method: "POST",
+            body: formData
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.detail || `Request failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        addMessage(
+            data.reply ?? "I didn't receive a response. Please try again.",
+            "bot"
+        );
+    } catch (error) {
+        addMessage(
+            "Sorry, I couldn't process your message. Please try again. If this continues, check the FastAPI terminal for errors.",
+            "bot"
+        );
+        console.error("Chat error:", error);
+    } finally {
+        typingIndicator.classList.remove("visible");
+        sending = false;
+        messageInput.disabled = false;
+        newChatButton.disabled = false;
+        sendButton.disabled = !thread_id;
+
+        document.querySelectorAll(".suggestion, .nav-item").forEach(button => {
+            button.disabled = false;
+        });
+
+        messageInput.focus();
+        scrollToLatest();
+    }
+}
+
+chatForm.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const text = messageInput.value;
+    if (!text.trim() || sending || !thread_id) return;
+
+    messageInput.value = "";
+    messageInput.style.height = "40px";
+
+    await sendMessage(text);
+});
+
+document.querySelectorAll(".suggestion").forEach(button => {
+    button.addEventListener("click", () => {
+        sendMessage(button.dataset.message);
+    });
+});
+
+document.querySelectorAll(".nav-item").forEach(button => {
+    button.addEventListener("click", () => {
+        document.querySelectorAll(".nav-item").forEach(item => {
+            item.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+        if (button.dataset.action === "welcome") {
+            messageInput.focus();
+            return;
+        }
+
+        if (button.dataset.message) {
+            sendMessage(button.dataset.message);
+        }
+    });
+});
+
+newChatButton.addEventListener("click", async () => {
+    if (sending) return;
+
+    resetMessages();
+    messageInput.value = "";
+    messageInput.style.height = "40px";
+
+    await createNewChat();
+    messageInput.focus();
+});
+
+messageInput.addEventListener("input", () => {
+    messageInput.style.height = "40px";
+    messageInput.style.height =
+        Math.min(messageInput.scrollHeight, 120) + "px";
+});
+
+messageInput.addEventListener("keydown", event => {
+    if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        chatForm.requestSubmit();
+    }
+});
+
+// Get a separate thread ID for the initial page session.
+createNewChat();
+</script>
+</body>
+</html>
