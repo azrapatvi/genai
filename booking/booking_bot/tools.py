@@ -245,3 +245,47 @@ def update_appointment(
 
     finally:
         conn.close()
+
+@tool
+def cancel_appointment(appointment_id: int, phone: str):
+    """Cancel an existing appointment using its appointment ID
+    and registered phone number."""
+
+    with sqlite3.connect(DB_NAME) as conn:
+        cursor = conn.cursor()
+
+        # Find appointment and verify registered phone number
+        cursor.execute("""
+            SELECT appointment_id, patient_name, doctor_name,
+                   appointment_date, session, queue_number, status
+            FROM appointments
+            WHERE appointment_id = ? AND phone = ?
+        """, (appointment_id, phone))
+
+        appointment = cursor.fetchone()
+
+        if appointment is None:
+            return (
+                "Appointment nahi mila. Please appointment ID "
+                "aur registered phone number check karein."
+            )
+
+        if appointment[6].lower() == "cancelled":
+            return "Ye appointment pehle hi cancel ho chuka hai."
+
+        # Cancel appointment
+        cursor.execute("""
+            UPDATE appointments
+            SET status = 'Cancelled'
+            WHERE appointment_id = ? AND phone = ?
+        """, (appointment_id, phone))
+
+        return (
+            "Appointment successfully cancel ho gaya!\n"
+            f"Appointment ID: {appointment[0]}\n"
+            f"Patient: {appointment[1]}\n"
+            f"Doctor: {appointment[2]}\n"
+            f"Date: {appointment[3]}\n"
+            f"Session: {appointment[4]}\n"
+            "Status: Cancelled"
+        )
