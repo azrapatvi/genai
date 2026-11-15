@@ -76,7 +76,7 @@ def build_index(pdf_path):
     print("Data Splitted Successfully")
 
     vector = FAISS.from_documents(
-        embedding=embeddings,
+        embedding=get_embeddings(),
         documents=splitted_text
     )
 
