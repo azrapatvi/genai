@@ -1,9 +1,8 @@
-from langchain_community.tools.tavily_search import TavilySearchResults
-from langchain_groq import ChatGroq
-
 import os
 import tempfile
-from langchain_community.embeddings.fastembed import FastEmbedEmbeddings
+
+from langchain_community.tools.tavily_search import TavilySearchResults
+from langchain_groq import ChatGroq
 
 # PDF loading
 from langchain_community.document_loaders import PyPDFLoader
@@ -12,7 +11,7 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 # Embeddings and vector database
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_community.embeddings.fastembed import FastEmbedEmbeddings
 from langchain_community.vectorstores import FAISS
 
 # Prompts and output parser
@@ -34,8 +33,7 @@ load_dotenv()
 # llm
 llm = ChatGroq(model='openai/gpt-oss-120b')
 
-# embeddings (loaded once)
-# embeddings (fastembed = ONNX, no PyTorch, much lighter)
+# embeddings (fastembed = ONNX, no PyTorch)
 embeddings = FastEmbedEmbeddings(
     model_name="sentence-transformers/all-MiniLM-L6-v2",
     cache_dir=os.path.join(tempfile.gettempdir(), "fastembed")   # Vercel only allows /tmp
