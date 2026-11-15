@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+python-multipart
+jinja2
+markdown
+python-dotenv
+langchain
+langchain-classic
+langchain-community
+langchain-core
+langchain-groq
+langchain-text-splitters
+fastembed
+faiss-cpu
+pypdf
+tavily-python
