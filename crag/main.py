@@ -1,43 +1,52 @@
 import os
 import shutil
 import html
+import tempfile
+from pathlib import Path
 
 import markdown
 from fastapi import FastAPI, Request, Form, File, UploadFile
-from fastapi.responses import RedirectResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 
 import crag as crag_module   # your CRAG logic
 
-app = FastAPI()
+BASE_DIR = Path(__file__).resolve().parent
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
+app = FastAPI()
+templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
+
+# Vercel only allows writing to the temp folder
+UPLOAD_DIR = os.path.join(tempfile.gettempdir(), "uploads")
+os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
 # turns **bold**, * lists, tables etc. into proper HTML
 def render_md(text):
-    safe = html.escape(text)   # block any raw HTML for safety
+    safe = html.escape(text)
     return markdown.markdown(safe, extensions=["extra", "nl2br", "sane_lists"])
 
 
 templates.env.filters["md"] = render_md
 
-os.makedirs("uploads", exist_ok=True)
-
-# simple in-memory state (one user, local use)
+# simple in-memory state
 state = {
     "pdf_name": None,
+    "pdf_path": None,
     "messages": [],   # each: {"question", "answer", "source"}
     "error": None,
 }
 
 
+@app.get("/static/style.css")
+def css():
+    return FileResponse(BASE_DIR / "static" / "style.css", media_type="text/css")
+
+
 @app.get("/")
 def home(request: Request):
     error = state["error"]
-    state["error"] = None   # show the error only once
+    state["error"] = None
 
     return templates.TemplateResponse(
         request=request,
@@ -56,7 +65,7 @@ def upload(pdf: UploadFile = File(...)):
         state["error"] = "Please upload a PDF file."
         return RedirectResponse("/", status_code=303)
 
-    path = os.path.join("uploads", pdf.filename)
+    path = os.path.join(UPLOAD_DIR, pdf.filename)
 
     with open(path, "wb") as f:
         shutil.copyfileobj(pdf.file, f)
@@ -64,6 +73,7 @@ def upload(pdf: UploadFile = File(...)):
     try:
         crag_module.build_index(path)
         state["pdf_name"] = pdf.filename
+        state["pdf_path"] = path
         state["messages"] = []
         crag_module.chat_history.clear()
     except Exception as e:
@@ -74,6 +84,10 @@ def upload(pdf: UploadFile = File(...)):
 
 @app.post("/ask")
 def ask(question: str = Form(...)):
+    # serverless can restart: rebuild the index from the saved PDF if needed
+    if crag_module.retriever is None and state["pdf_path"] and os.path.exists(state["pdf_path"]):
+        crag_module.build_index(state["pdf_path"])
+
     if crag_module.retriever is None:
         state["error"] = "Upload a PDF first."
         return RedirectResponse("/", status_code=303)
