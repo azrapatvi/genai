@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRAG Chatbot</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header class="topbar">
+    <div class="brand">
+        <div class="logo">C</div>
+        <div>
+            <h1>CRAG Chatbot</h1>
+            <p>Answers from your PDF. Falls back to the web when needed.</p>
+        </div>
+    </div>
+
+    <form action="/clear" method="post">
+        <button class="ghost" type="submit">Clear chat</button>
+    </form>
+</header>
+
+<main class="app">
+
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <!-- Upload -->
+    <form class="upload" id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+        <label class="drop" for="pdfInput">
+            <span class="drop-icon">📄</span>
+            <span class="drop-text" id="fileLabel">
+                {% if pdf_name %}{{ pdf_name }}{% else %}Click to choose a PDF{% endif %}
+            </span>
+            {% if pdf_name %}<span class="pill ready">Ready</span>{% endif %}
+        </label>
+        <input type="file" id="pdfInput" name="pdf" accept=".pdf" required hidden>
+        <button type="submit" id="uploadBtn">Upload</button>
+    </form>
+
+    <!-- Chat -->
+    <section class="chat" id="chat">
+
+        {% if not messages %}
+        <div class="empty">
+            <div class="empty-icon">💬</div>
+            <h2>Ask anything about your document</h2>
+            <p>Upload a PDF, then ask a question. If the PDF has no answer, I search the web.</p>
+            <div class="chips">
+                <button type="button" class="chip">Summarize this document</button>
+                <button type="button" class="chip">What are the key points?</button>
+                <button type="button" class="chip">Explain this in simple words</button>
+            </div>
+        </div>
+        {% endif %}
+
+        {% for m in messages %}
+        <div class="row user">
+            <div class="msg user-msg">{{ m.question }}</div>
+            <div class="avatar me">You</div>
+        </div>
+
+        <div class="row bot">
+            <div class="avatar ai">AI</div>
+            <div class="msg bot-msg">
+                <div class="md">{{ m.answer | md | safe }}</div>
+                <span class="badge {{ m.source }}">
+                    {% if m.source == "PDF" %}From your PDF{% else %}From the web{% endif %}
+                </span>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- shown while waiting for the answer -->
+        <div class="row bot" id="typing" hidden>
+            <div class="avatar ai">AI</div>
+            <div class="msg bot-msg typing"><i></i><i></i><i></i></div>
+        </div>
+
+    </section>
+</main>
+
+<!-- Ask bar -->
+<form class="composer" id="askForm" action="/ask" method="post">
+    <input type="text" id="questionInput" name="question" placeholder="Type your question..." autocomplete="off" required>
+    <button type="submit" id="askBtn">Ask</button>
+</form>
+
+<script>
+    const chat = document.getElementById("chat");
+    const input = document.getElementById("questionInput");
+
+    // scroll to latest message
+    window.scrollTo(0, document.body.scrollHeight);
+
+    // show chosen file name
+    document.getElementById("pdfInput").addEventListener("change", function () {
+        if (this.files.length) {
+            document.getElementById("fileLabel").textContent = this.files[0].name;
+        }
+    });
+
+    // upload loading state
+    document.getElementById("uploadForm").addEventListener("submit", function () {
+        const b = document.getElementById("uploadBtn");
+        b.textContent = "Reading PDF...";
+        b.disabled = true;
+    });
+
+    // ask loading state + typing dots
+    document.getElementById("askForm").addEventListener("submit", function () {
+        document.getElementById("askBtn").disabled = true;
+        document.getElementById("askBtn").textContent = "Thinking...";
+        const t = document.getElementById("typing");
+        t.hidden = false;
+        window.scrollTo(0, document.body.scrollHeight);
+    });
+
+    // suggestion chips fill the box
+    document.querySelectorAll(".chip").forEach(function (c) {
+        c.addEventListener("click", function () {
+            input.value = c.textContent;
+            input.focus();
+        });
+    });
+</script>
+
+</body>
+</html>
