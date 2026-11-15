@@ -1,6 +1,15 @@
 import os
 import tempfile
 
+# ---- Vercel: only /tmp is writable, so point every cache there ----
+# (must be set BEFORE importing fastembed / huggingface)
+TMP = tempfile.gettempdir()
+os.environ["HF_HOME"] = os.path.join(TMP, "hf")
+os.environ["HF_HUB_CACHE"] = os.path.join(TMP, "hf", "hub")
+os.environ["XDG_CACHE_HOME"] = TMP
+os.environ["HF_HUB_DISABLE_XET"] = "1"
+os.environ["FASTEMBED_CACHE_PATH"] = os.path.join(TMP, "fastembed")
+
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_groq import ChatGroq
 
@@ -33,15 +42,22 @@ load_dotenv()
 # llm
 llm = ChatGroq(model='openai/gpt-oss-120b')
 
-# embeddings (fastembed = ONNX, no PyTorch)
-embeddings = FastEmbedEmbeddings(
-    model_name="sentence-transformers/all-MiniLM-L6-v2",
-    cache_dir=os.path.join(tempfile.gettempdir(), "fastembed")   # Vercel only allows /tmp
-)
+# embeddings are loaded on first use (not at startup)
+embeddings = None
+
+
+def get_embeddings():
+    global embeddings
+    if embeddings is None:
+        embeddings = FastEmbedEmbeddings(
+            model_name="sentence-transformers/all-MiniLM-L6-v2",
+            cache_dir=os.path.join(TMP, "fastembed")
+        )
+    return embeddings
+
 
 # retriever is created after the user uploads a PDF
 retriever = None
-
 
 def build_index(pdf_path):
     global retriever
