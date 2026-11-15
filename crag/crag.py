@@ -1,6 +1,10 @@
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_groq import ChatGroq
 
+import os
+import tempfile
+from langchain_community.embeddings.fastembed import FastEmbedEmbeddings
+
 # PDF loading
 from langchain_community.document_loaders import PyPDFLoader
 
@@ -31,8 +35,10 @@ load_dotenv()
 llm = ChatGroq(model='openai/gpt-oss-120b')
 
 # embeddings (loaded once)
-embeddings = HuggingFaceEmbeddings(
-    model_name='all-MiniLM-L6-v2'
+# embeddings (fastembed = ONNX, no PyTorch, much lighter)
+embeddings = FastEmbedEmbeddings(
+    model_name="sentence-transformers/all-MiniLM-L6-v2",
+    cache_dir=os.path.join(tempfile.gettempdir(), "fastembed")   # Vercel only allows /tmp
 )
 
 # retriever is created after the user uploads a PDF
